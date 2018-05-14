@@ -55,7 +55,6 @@ namespace AdWLibrary
 
                 return productVendorByProductName.First();
             }
-
         }
         public static List<Product> GetProductsWithNRecentReviews(int howManyReviews)
         {
@@ -72,7 +71,6 @@ namespace AdWLibrary
                                           select p;
                 return productsWithNReviews.ToList();
             }
-
         }
 
         public static List<Product> GetNRecentlyReviewedProducts(int howManyProducts)
@@ -85,7 +83,6 @@ namespace AdWLibrary
                                        select p).Distinct().Take(howManyProducts);
 
                 return recentlyReviewed.ToList();
-
             }
         }
 
