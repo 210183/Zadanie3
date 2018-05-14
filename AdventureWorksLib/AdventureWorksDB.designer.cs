@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AdventureWorksLibrary
+namespace AdventureWorksLib
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -39,6 +39,9 @@ namespace AdventureWorksLibrary
     partial void InsertVendor(Vendor instance);
     partial void UpdateVendor(Vendor instance);
     partial void DeleteVendor(Vendor instance);
+    partial void InsertProductReview(ProductReview instance);
+    partial void UpdateProductReview(ProductReview instance);
+    partial void DeleteProductReview(ProductReview instance);
     #endregion
 		
 		public AdventureWorksDBDataContext() : 
@@ -92,6 +95,14 @@ namespace AdventureWorksLibrary
 			get
 			{
 				return this.GetTable<Vendor>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProductReview> ProductReviews
+		{
+			get
+			{
+				return this.GetTable<ProductReview>();
 			}
 		}
 	}
@@ -154,6 +165,8 @@ namespace AdventureWorksLibrary
 		
 		private EntitySet<ProductVendor> _ProductVendors;
 		
+		private EntitySet<ProductReview> _ProductReviews;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -213,6 +226,7 @@ namespace AdventureWorksLibrary
 		public Product()
 		{
 			this._ProductVendors = new EntitySet<ProductVendor>(new Action<ProductVendor>(this.attach_ProductVendors), new Action<ProductVendor>(this.detach_ProductVendors));
+			this._ProductReviews = new EntitySet<ProductReview>(new Action<ProductReview>(this.attach_ProductReviews), new Action<ProductReview>(this.detach_ProductReviews));
 			OnCreated();
 		}
 		
@@ -729,6 +743,19 @@ namespace AdventureWorksLibrary
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductReview", Storage="_ProductReviews", ThisKey="ProductID", OtherKey="ProductID")]
+		public EntitySet<ProductReview> ProductReviews
+		{
+			get
+			{
+				return this._ProductReviews;
+			}
+			set
+			{
+				this._ProductReviews.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -756,6 +783,18 @@ namespace AdventureWorksLibrary
 		}
 		
 		private void detach_ProductVendors(ProductVendor entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = null;
+		}
+		
+		private void attach_ProductReviews(ProductReview entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = this;
+		}
+		
+		private void detach_ProductReviews(ProductReview entity)
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
@@ -1401,6 +1440,277 @@ namespace AdventureWorksLibrary
 		{
 			this.SendPropertyChanging();
 			entity.Vendor = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Production.ProductReview")]
+	public partial class ProductReview : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ProductReviewID;
+		
+		private int _ProductID;
+		
+		private string _ReviewerName;
+		
+		private System.DateTime _ReviewDate;
+		
+		private string _EmailAddress;
+		
+		private int _Rating;
+		
+		private string _Comments;
+		
+		private System.DateTime _ModifiedDate;
+		
+		private EntityRef<Product> _Product;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProductReviewIDChanging(int value);
+    partial void OnProductReviewIDChanged();
+    partial void OnProductIDChanging(int value);
+    partial void OnProductIDChanged();
+    partial void OnReviewerNameChanging(string value);
+    partial void OnReviewerNameChanged();
+    partial void OnReviewDateChanging(System.DateTime value);
+    partial void OnReviewDateChanged();
+    partial void OnEmailAddressChanging(string value);
+    partial void OnEmailAddressChanged();
+    partial void OnRatingChanging(int value);
+    partial void OnRatingChanged();
+    partial void OnCommentsChanging(string value);
+    partial void OnCommentsChanged();
+    partial void OnModifiedDateChanging(System.DateTime value);
+    partial void OnModifiedDateChanged();
+    #endregion
+		
+		public ProductReview()
+		{
+			this._Product = default(EntityRef<Product>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductReviewID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ProductReviewID
+		{
+			get
+			{
+				return this._ProductReviewID;
+			}
+			set
+			{
+				if ((this._ProductReviewID != value))
+				{
+					this.OnProductReviewIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductReviewID = value;
+					this.SendPropertyChanged("ProductReviewID");
+					this.OnProductReviewIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int NOT NULL")]
+		public int ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductID = value;
+					this.SendPropertyChanged("ProductID");
+					this.OnProductIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReviewerName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ReviewerName
+		{
+			get
+			{
+				return this._ReviewerName;
+			}
+			set
+			{
+				if ((this._ReviewerName != value))
+				{
+					this.OnReviewerNameChanging(value);
+					this.SendPropertyChanging();
+					this._ReviewerName = value;
+					this.SendPropertyChanged("ReviewerName");
+					this.OnReviewerNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReviewDate", DbType="DateTime NOT NULL")]
+		public System.DateTime ReviewDate
+		{
+			get
+			{
+				return this._ReviewDate;
+			}
+			set
+			{
+				if ((this._ReviewDate != value))
+				{
+					this.OnReviewDateChanging(value);
+					this.SendPropertyChanging();
+					this._ReviewDate = value;
+					this.SendPropertyChanged("ReviewDate");
+					this.OnReviewDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string EmailAddress
+		{
+			get
+			{
+				return this._EmailAddress;
+			}
+			set
+			{
+				if ((this._EmailAddress != value))
+				{
+					this.OnEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmailAddress = value;
+					this.SendPropertyChanged("EmailAddress");
+					this.OnEmailAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rating", DbType="Int NOT NULL")]
+		public int Rating
+		{
+			get
+			{
+				return this._Rating;
+			}
+			set
+			{
+				if ((this._Rating != value))
+				{
+					this.OnRatingChanging(value);
+					this.SendPropertyChanging();
+					this._Rating = value;
+					this.SendPropertyChanged("Rating");
+					this.OnRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comments", DbType="NVarChar(3850)")]
+		public string Comments
+		{
+			get
+			{
+				return this._Comments;
+			}
+			set
+			{
+				if ((this._Comments != value))
+				{
+					this.OnCommentsChanging(value);
+					this.SendPropertyChanging();
+					this._Comments = value;
+					this.SendPropertyChanged("Comments");
+					this.OnCommentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime ModifiedDate
+		{
+			get
+			{
+				return this._ModifiedDate;
+			}
+			set
+			{
+				if ((this._ModifiedDate != value))
+				{
+					this.OnModifiedDateChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedDate = value;
+					this.SendPropertyChanged("ModifiedDate");
+					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductReview", Storage="_Product", ThisKey="ProductID", OtherKey="ProductID", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.ProductReviews.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.ProductReviews.Add(this);
+						this._ProductID = value.ProductID;
+					}
+					else
+					{
+						this._ProductID = default(int);
+					}
+					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
