@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AdventureWorksLibrary;
-using DM = AdventureWorksLibrary.DataManager;
+using AdWLibrary;
+using DM = AdWLibrary.DataManager;
 
 
-namespace AdventureWorksLibraryTests
+namespace AdWLibraryTests
 {
     [TestClass]
     public class SelectsTests

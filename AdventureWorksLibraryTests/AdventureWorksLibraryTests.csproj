@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdventureWorksLib\AdventureWorksLibrary.csproj">
-      <Project>{eba85754-0ec1-41ba-996a-ea69eee5c272}</Project>
-      <Name>AdventureWorksLibrary</Name>
+    <ProjectReference Include="..\AdWLibrary\AdWLibrary.csproj">
+      <Project>{d7a159a0-e6a6-4437-816b-fac5f6e688b2}</Project>
+      <Name>AdWLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
