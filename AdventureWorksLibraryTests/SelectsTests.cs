@@ -74,5 +74,24 @@ namespace AdWLibraryTests
 
             Assert.AreEqual(returnedCost, properTotalCost);
         }
+
+        [TestMethod]
+        public void GetProductsWithNRecentReviews_ShouldReturnProperValues()
+        {
+            var products = DM.GetProductsWithNRecentReviews(2);
+            Assert.AreEqual(products.Count, 1);
+            Assert.IsNotNull(products.Find(p => p.ProductID == 937));
+        }
+
+        [TestMethod]
+        public void GetNRecentlyReviewedProducts_ShouldReturnProperValues()
+        {
+            var products = DM.GetNRecentlyReviewedProducts(2);
+            Assert.AreEqual(products.Count, 2);
+            Assert.IsNotNull(products.Find(p => p.ProductID == 798));
+            Assert.IsNotNull(products.Find(p => p.ProductID == 937));
+        }
+
+
     }
 }
