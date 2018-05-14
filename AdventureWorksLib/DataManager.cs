@@ -29,5 +29,34 @@ namespace AdventureWorksLibrary
                 return productsByVendorName.ToList();
             }
         }
+        public static string GetProductVendorByProductName(string productName)
+        {
+            using (AdventureWorksDBDataContext db = new AdventureWorksDBDataContext())
+            {
+                var productVendorByProductName = from Vendor v in db.Vendors
+                                                 join ProductVendor pv in db.ProductVendors on v.BusinessEntityID equals pv.BusinessEntityID
+                                                 join Product p in db.Products on pv.ProductID equals p.ProductID
+                                                 where p.Name == productName
+                                                 select v.Name;
+
+                return productVendorByProductName.First();
+            }
+        }
+
+        public static List<Product> GetProductsWithNRecentReviews(int howManyReviews)
+        {
+            using (AdventureWorksDBDataContext db = new AdventureWorksDBDataContext())
+            {
+                var productsWithNReviews = from Product p in db.Products
+                                           where (
+                                             from Product p_in in db.Products
+                                             join ProductReview pr in db.ProductReviews on p_in.ProductID equals pr.ProductID
+                                             where p_in.ProductID == p.ProductID
+                                             select p_in.ProductID
+                                           ).Count() == howManyReviews
+                                           select p;
+                return productsWithNReviews.ToList();
+            }
+        }
     }
 }
