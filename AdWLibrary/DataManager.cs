@@ -114,5 +114,62 @@ namespace AdWLibrary
                 return Convert.ToInt32(productsSum ?? 0);
             }
         }
+
+        #region extension methods
+
+        public static List<Product> GetUncategorized(this List<Product> products)
+        {
+            return products.Where(p => p.ProductSubcategory != null).ToList();
+        }
+
+        public static List<Product> GetUncategorizedDeclarative(this List<Product> products)
+        {
+            var selected = from Product p in products
+                           where p.ProductSubcategory != null
+                           select p;
+            return selected.ToList();
+        }
+
+        /// <summary>
+        /// TODO: Ask about signature, what should that method do ???
+        /// </summary>
+        /// <param name="products"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
+        public static List<Product> GetPaged(this List<Product> products, int pageSize, int pageNumber) 
+        {
+            var query = products.Skip(pageSize * (pageNumber)).Take(pageSize);
+            return query.ToList();
+        }
+
+        //public static List<Product> GetPagedDeclarative(this List<Product> products, int pageSize, int pageNumber)
+        //{
+
+        //}
+
+        public static string GetProductsAndTheirVendors(this List<Product> products)
+        {
+            using (var db = new AdventureWorksDataContext())
+            {
+                var productsVendors = (from Vendor v in db.Vendors
+                                      join ProductVendor pv in db.ProductVendors on v.BusinessEntityID equals pv.BusinessEntityID
+                                      join Product p in db.Products on pv.ProductID equals p.ProductID
+                                      where products.Select(p => p.ProductID).Contains(p.ProductID)
+                                      select new
+                                      {
+                                          ProductName = p.Name,
+                                          VendorName = v.Name
+                                      }).ToList();
+
+                StringBuilder sb = new StringBuilder();
+                foreach (var pv in productsVendors)
+                {
+                    sb.AppendFormat($"{pv.ProductName}-{pv.VendorName}\r\n");
+                }
+                return sb.ToString();
+            }
+        }
+        #endregion
     }
 }

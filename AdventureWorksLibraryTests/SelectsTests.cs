@@ -71,7 +71,6 @@ namespace AdWLibraryTests
                     {
                         Name = categoryName
                     });
-            
             Assert.AreEqual(returnedCost, properTotalCost);
         }
 
@@ -93,5 +92,26 @@ namespace AdWLibraryTests
         }
 
 
+        [TestMethod]
+        public void GetPagedExtensionMethod()
+        {
+            var categoryName = "Accessories";
+            var productAmounts = 10;
+            var products = DM.GetNProductsFromCategory(categoryName, productAmounts);
+            var page = products.GetPaged(3, 2);
+        }
+
+        [TestMethod]
+        public void GetProductsAndTheirVendors()
+        {
+            var categoryName = "Accessories";
+            var productAmounts = 2;
+            var products = DM.GetNProductsFromCategory(categoryName, productAmounts);
+            var report = products.GetProductsAndTheirVendors();
+            foreach (var p in products)
+            {
+                Assert.IsTrue(report.Contains(p.Name));
+            }
+        }
     }
 }
