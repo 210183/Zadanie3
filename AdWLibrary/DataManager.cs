@@ -82,7 +82,7 @@ namespace AdWLibrary
                 var recentlyReviewed = (from Product p in db.Products
                                        join ProductReview pr in db.ProductReviews on p.ProductID equals pr.ProductID
                                        orderby pr.ReviewDate descending
-                                       select p).Distinct().Take(howManyProducts);
+                                       select p).GroupBy(p => p.ProductID).Select(p => p.First()).Take(howManyProducts);
 
                 return recentlyReviewed.ToList();
 
