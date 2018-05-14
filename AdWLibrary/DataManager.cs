@@ -79,12 +79,12 @@ namespace AdWLibrary
         {
             using (AdventureWorksDataContext db = new AdventureWorksDataContext())
             {
-                var recentlyReviewed = from Product p in db.Products
+                var recentlyReviewed = (from Product p in db.Products
                                        join ProductReview pr in db.ProductReviews on p.ProductID equals pr.ProductID
                                        orderby pr.ReviewDate descending
-                                       select p;
+                                       select p).Distinct().Take(howManyProducts);
 
-                return recentlyReviewed.Distinct().Take(howManyProducts).ToList();
+                return recentlyReviewed.ToList();
 
             }
         }
