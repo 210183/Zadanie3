@@ -73,7 +73,20 @@ namespace AdWLibrary
                 return productsWithNReviews.ToList();
             }
 
+        }
 
+        public static List<Product> GetNRecentlyReviewedProducts(int howManyProducts)
+        {
+            using (AdventureWorksDataContext db = new AdventureWorksDataContext())
+            {
+                var recentlyReviewed = (from Product p in db.Products
+                                       join ProductReview pr in db.ProductReviews on p.ProductID equals pr.ProductID
+                                       orderby pr.ReviewDate descending
+                                       select p).Distinct().Take(howManyProducts);
+
+                return recentlyReviewed.ToList();
+
+            }
         }
 
         public static List<Product> GetNProductsFromCategory(string categoryName, int n)
