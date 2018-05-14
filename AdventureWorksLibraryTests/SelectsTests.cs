@@ -64,14 +64,14 @@ namespace AdWLibraryTests
         [TestMethod]
         public void GetTotalStandardCostByCategory_ShouldReturnProperValues()
         {
-            var categoryName = "Capital Road Cycles";
-            var properTotalCost = 29;
+            var categoryName = "Accessories";
+            var properTotalCost = 384;
             var returnedCost = DM.GetTotalStandardCostByCategory(
                     new ProductCategory
                     {
                         Name = categoryName
                     });
-
+            
             Assert.AreEqual(returnedCost, properTotalCost);
         }
 
