@@ -76,6 +76,33 @@ namespace AdWLibrary
 
         }
 
+        public static List<Product> GetNProductsFromCategory(string categoryName, int n)
+        {
+            using (AdventureWorksDataContext db = new AdventureWorksDataContext())
+            {
 
+                var products = from Product p in db.Products
+                               join ProductSubcategory ps in db.ProductSubcategories on p.ProductSubcategoryID equals ps.ProductSubcategoryID
+                               join ProductCategory pc in db.ProductCategories on ps.ProductCategoryID equals pc.ProductCategoryID
+                               where pc.Name == categoryName
+                               orderby pc.Name, p.Name
+                               select p;
+                return products.Take(n).ToList();
+            }
+        }
+
+        public static int GetTotalStandardCostByCategory(ProductCategory category)
+        {
+            using (AdventureWorksDataContext db = new AdventureWorksDataContext())
+            {
+
+                var products = (from Product p in db.Products
+                                join ProductSubcategory ps in db.ProductSubcategories on p.ProductSubcategoryID equals ps.ProductSubcategoryID
+                                join ProductCategory pc in db.ProductCategories on ps.ProductCategoryID equals pc.ProductCategoryID
+                                where pc == category
+                                select p.StandardCost).Sum();
+                return (int)products;
+            }
+        }
     }
 }
