@@ -105,6 +105,15 @@ namespace AdWLibraryTests
         }
 
         [TestMethod]
+        public void GetNRecentlyReviewedProductsImperative_ShouldReturnProperValues()
+        {
+            var products = DM.GetNRecentlyReviewedProductsImperative(2);
+            Assert.AreEqual(products.Count, 2);
+            Assert.IsNotNull(products.Find(p => p.ProductID == 798));
+            Assert.IsNotNull(products.Find(p => p.ProductID == 937));
+        }
+
+        [TestMethod]
         public void GetPagedExtensionMethod()
         {
             var categoryName = "Accessories";
