@@ -64,12 +64,25 @@ namespace AdWLibraryTests
         [TestMethod]
         public void GetTotalStandardCostByCategory_ShouldReturnProperValues()
         {
-            var categoryName = "Accessories";
+            var categoryId = 4;
             var properTotalCost = 384;
             var returnedCost = DM.GetTotalStandardCostByCategory(
                     new ProductCategory
                     {
-                        Name = categoryName
+                        ProductCategoryID = categoryId
+                    });
+            Assert.AreEqual(returnedCost, properTotalCost);
+        }
+
+        [TestMethod]
+        public void GetTotalStandardCostByCategory_NonExistingCategory()
+        {
+            var categoryId = 5;
+            var properTotalCost = 0;
+            var returnedCost = DM.GetTotalStandardCostByCategory(
+                    new ProductCategory
+                    {
+                        ProductCategoryID = categoryId
                     });
             Assert.AreEqual(returnedCost, properTotalCost);
         }
@@ -91,7 +104,6 @@ namespace AdWLibraryTests
             Assert.IsNotNull(products.Find(p => p.ProductID == 937));
         }
 
-
         [TestMethod]
         public void GetPagedExtensionMethod()
         {
@@ -99,6 +111,7 @@ namespace AdWLibraryTests
             var productAmounts = 10;
             var products = DM.GetNProductsFromCategory(categoryName, productAmounts);
             var page = products.GetPaged(3, 2);
+            Assert.AreEqual(products.Count, 3);
         }
 
         [TestMethod]

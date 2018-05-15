@@ -29,6 +29,7 @@ namespace AdWLibrary
                 return productsByVendorName.ToList();
             }
         }
+
         public static List<string> GetProductsNamesByVendorName(string vendorName)
         {
             using (AdventureWorksDataContext db = new AdventureWorksDataContext())
@@ -51,22 +52,23 @@ namespace AdWLibrary
                                                  join ProductVendor pv in db.ProductVendors on v.BusinessEntityID equals pv.BusinessEntityID
                                                  join Product p in db.Products on pv.ProductID equals p.ProductID
                                                  where p.Name == productName
+                                                 orderby v.Name
                                                  select v.Name;
 
-                return productVendorByProductName.First();
+                return productVendorByProductName.FirstOrDefault();
             }
         }
+
         public static List<Product> GetProductsWithNRecentReviews(int howManyReviews)
         {
             using (AdventureWorksDataContext db = new AdventureWorksDataContext())
             {
 
                 var productsWithNReviews = from Product p in db.Products
-                                          where (
-                                            from Product p_in in db.Products
-                                            join ProductReview pr in db.ProductReviews on p_in.ProductID equals pr.ProductID
-                                            where p_in.ProductID == p.ProductID
-                                            select p_in.ProductID
+                                           where (
+                                            from ProductReview pr in db.ProductReviews 
+                                            where pr.ProductID == p.ProductID
+                                            select pr.ProductID
                                           ).Count() == howManyReviews
                                           select p;
                 return productsWithNReviews.ToList();
@@ -106,12 +108,13 @@ namespace AdWLibrary
             using (AdventureWorksDataContext db = new AdventureWorksDataContext())
             {
                 var productsSum = (from Product p in db.Products
-                                join ProductSubcategory ps in db.ProductSubcategories on p.ProductSubcategoryID equals ps.ProductSubcategoryID
-                                join ProductCategory pc in db.ProductCategories on ps.ProductCategoryID equals pc.ProductCategoryID
-                                where pc.Name == category.Name
-                                select p.StandardCost)?.Sum();
+                                   join ProductSubcategory ps in db.ProductSubcategories on p.ProductSubcategoryID equals ps.ProductSubcategoryID
+                                   join ProductCategory pc in db.ProductCategories on ps.ProductCategoryID equals pc.ProductCategoryID
+                                   where pc.ProductCategoryID == category.ProductCategoryID
+                                   select (decimal?)p.StandardCost
+                                   ).Sum() ?? 0;
 
-                return Convert.ToInt32(productsSum ?? 0);
+                return Convert.ToInt32(productsSum);
             }
         }
 
@@ -142,11 +145,6 @@ namespace AdWLibrary
             var query = products.Skip(pageSize * (pageNumber)).Take(pageSize);
             return query.ToList();
         }
-
-        //public static List<Product> GetPagedDeclarative(this List<Product> products, int pageSize, int pageNumber)
-        //{
-
-        //}
 
         public static string GetProductsAndTheirVendors(this List<Product> products)
         {
