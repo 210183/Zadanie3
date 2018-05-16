@@ -17,9 +17,36 @@ namespace AdventureWorksLibraryTests
         [TestMethod]
         public void MyProductCreation_Test()
         {
-            var product = DM.GetProductsWithNRecentReviews(1).First(); // first element
+            int productId = 937;
+            var product = DM.GetProductsWithNRecentReviews(2).Find(p => p.ProductID == productId); 
+            var myProduct = MyProductFactory.CreateMyProduct(product);
+            int reviewAmount = 2;
+            Assert.AreEqual(reviewAmount, myProduct.ProductReviews.Count);
+        }
+
+        [TestMethod]
+        public void MyProductFactory_Caching_Test()
+        {
+            int productId = 937;
+            var product = DM.GetProductsWithNRecentReviews(2).Find(p => p.ProductID == productId);
+            var myProductFirstReference = MyProductFactory.CreateMyProduct(product);
+            var myProductSecondReference = MyProductFactory.CreateMyProduct(product);
+            myProductFirstReference.Name = "dump name";
+            myProductSecondReference.Name = "New name for the same product";
+            Assert.AreEqual("New name for the same product", myProductFirstReference.Name);
+            Assert.AreEqual(myProductFirstReference.Name, myProductSecondReference.Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ProductionArgumentNullException))]
+        public void MyProductCreation_ShouldThrow_Test()
+        {
+            int productId = 937;
+            var product = DM.GetProductsWithNRecentReviews(Int32.MaxValue).Find(p => p.ProductID == productId);
             var myProduct = MyProductFactory.CreateMyProduct(product);
         }
+
+
 
         #region Additional test attributes
         //

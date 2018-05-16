@@ -9,6 +9,11 @@ namespace AdWLibrary.MyProduct
     public static class MyProductFactory
     {
         /// <summary>
+        /// Factory stores already loaded products in order to avoid repeated downloading from database
+        /// </summary>
+        private static List<MyProduct> loadedMyProducts = new List<MyProduct>();
+
+        /// <summary>
         /// Creates new MyProduct instance from values from Product.
         /// </summary>
         /// <param name="product"></param>
@@ -17,7 +22,12 @@ namespace AdWLibrary.MyProduct
         {
             if (product is null)
             {
-                throw new ProductionArgumentNullException(product.ToString());
+                throw new ProductionArgumentNullException(typeof(Product).ToString());
+            }
+            var loadedMyProduct = loadedMyProducts.Find(p => p.ProductID == product.ProductID);
+            if(loadedMyProduct != null)
+            {
+                return loadedMyProduct;
             }
             MyProduct myProduct = new MyProduct(product.ProductID)
             {
@@ -33,6 +43,7 @@ namespace AdWLibrary.MyProduct
                               select pr;
                 myProduct.ProductReviews = MyProductReviewFactory.CreateMyProductReviews(reviews.ToList());
             }
+            loadedMyProducts.Add(myProduct);
             return myProduct;
         }
 
@@ -41,11 +52,11 @@ namespace AdWLibrary.MyProduct
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public static List<MyProduct> CreateMyProduct(List<Product> products)
+        public static List<MyProduct> CreateMyProducts(List<Product> products)
         {
             if (products is null)
             {
-                throw new ProductionArgumentNullException(products.ToString());
+                throw new ProductionArgumentNullException(typeof(Product).ToString());
             }
             var myProducts = new List<MyProduct>();
             foreach (var product in products)
@@ -53,6 +64,14 @@ namespace AdWLibrary.MyProduct
                 myProducts.Add(CreateMyProduct(product));
             }
             return myProducts;
+        }
+
+        /// <summary>
+        /// Method to clear list of already loaded products if you want to free space
+        /// </summary>
+        public static void Reset()
+        {
+            loadedMyProducts.Clear();
         }
     }
 }

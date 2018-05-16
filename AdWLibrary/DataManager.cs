@@ -150,13 +150,13 @@ namespace AdWLibrary
 
         public static List<Product> GetUncategorized(this List<Product> products)
         {
-            return products.Where(p => p.ProductSubcategory != null).ToList();
+            return products.Where(p => p.ProductSubcategoryID != null).ToList();
         }
 
         public static List<Product> GetUncategorizedDeclarative(this List<Product> products)
         {
             var selected = from Product p in products
-                           where p.ProductSubcategory != null
+                           where p.ProductSubcategoryID != null
                            select p;
             return selected.ToList();
         }
