@@ -43,7 +43,11 @@ namespace AdWLibrary
             }
         }
 
-        //TODO: czy tu nie powinna byc lista??!!
+        /// <summary>
+        /// Returns first found vendor, ordered by vendor name to ensure more predictable outcome
+        /// </summary>
+        /// <param name="productName"></param>
+        /// <returns></returns>
         public static string GetProductVendorByProductName(string productName)
         {
             using (AdventureWorksDataContext db = new AdventureWorksDataContext())

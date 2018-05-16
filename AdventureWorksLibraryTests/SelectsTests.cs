@@ -6,6 +6,9 @@ using DM = AdWLibrary.DataManager;
 
 namespace AdWLibraryTests
 {
+    /// <summary>
+    /// tests for methods from stage 3
+    /// </summary>
     [TestClass]
     public class SelectsTests
     {
@@ -111,29 +114,6 @@ namespace AdWLibraryTests
             Assert.AreEqual(products.Count, 2);
             Assert.IsNotNull(products.Find(p => p.ProductID == 798));
             Assert.IsNotNull(products.Find(p => p.ProductID == 937));
-        }
-
-        [TestMethod]
-        public void GetPagedExtensionMethod()
-        {
-            var categoryName = "Accessories";
-            var productAmounts = 10;
-            var products = DM.GetNProductsFromCategory(categoryName, productAmounts);
-            var page = products.GetPaged(3, 2);
-            Assert.AreEqual(products.Count, 3);
-        }
-
-        [TestMethod]
-        public void GetProductsAndTheirVendors()
-        {
-            var categoryName = "Accessories";
-            var productAmounts = 2;
-            var products = DM.GetNProductsFromCategory(categoryName, productAmounts);
-            var report = products.GetProductsAndTheirVendors();
-            foreach (var p in products)
-            {
-                Assert.IsTrue(report.Contains(p.Name));
-            }
         }
     }
 }
