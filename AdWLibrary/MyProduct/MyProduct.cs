@@ -13,7 +13,6 @@ namespace AdWLibrary.MyProduct
         public decimal StandardCost { get; set; }
         public string Color { get; set; }
         public string Size { get; set; }
-        public List<MyProductReview> ProductReviews { get; set; }
 
         internal MyProduct(int Id)
         {
